@@ -1,0 +1,29 @@
+public class QueryLimitCheck implements Database.Batchable<sObject>, Database.Stateful{
+    
+    public Database.QueryLocator start(Database.BatchableContext BC){
+        List<String> list1 = new List<String>();
+        for(Integer i = 0; i < 10000;i++){
+            String a = 'a0D330000007EY9a';
+            list1.add(a);
+            if(i == 9999){
+                String b = 'a0D28000007EY9g';
+                list1.add(b);
+            }
+        }
+        System.debug(list1.size());
+        String query = 'SELECT Id, Name FROM Jobseeker__c WHERE Id in :list1';
+        System.debug(query);
+        Database.QueryLocator q = Database.getQueryLocator(query);
+        System.debug('q = '+ q);
+        return q;
+    }
+    
+    public void execute(Database.BatchableContext BC, List<Jobseeker__c> scope) {
+        System.debug('xxxxx =' + scope);
+    }
+    
+    public void finish(Database.BatchableContext BC) {
+    }
+    
+    
+}
